@@ -1,13 +1,24 @@
 from autobahnbot import AutobahnParser, SQLConnector, TelegramBot
-import topsecret
+import os
 
-sql_connection = SQLConnector(topsecret.mysql_host, topsecret.mysql_user, topsecret.mysql_password, topsecret.mysql_database)
-telegram_bot = TelegramBot(topsecret.telegram_token, topsecret.telegram_chatid)
+mysql_host = os.environ['MYSQL_HOST']
+mysql_user = os.environ['MYSQL_USER']
+mysql_password = os.environ['MYSQL_PASSWORD']
+mysql_database = os.environ['MYSQL_DATABASE']
+telegram_token = os.environ['TELEGRAM_TOKEN']
+telegram_chatid = os.environ['TELEGRAM_CHATID']
+env_highway = os.environ['ENV_HIGHWAY']
+env_location1 = os.environ['ENV_LOCATION1']
+env_location2 = os.environ['ENV_LOCATION2']
+
+
+sql_connection = SQLConnector(mysql_host, mysql_user, mysql_password, mysql_database)
+telegram_bot = TelegramBot(telegram_token, telegram_chatid)
 
 
 ## DATEN ABFRAGEN UND GGF EINTRAGEN
 
-autobahn_data = AutobahnParser().get_warnings("A3", "Würzburg", "Frankfurt")
+autobahn_data = AutobahnParser().get_warnings(env_highway, env_location1, env_location2)
 database_data = sql_connection.get_all_externalids()
 
 for element in autobahn_data:
