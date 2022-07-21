@@ -3,5 +3,4 @@ WORKDIR /autobahn_info
 ADD /autobahnbot .
 ADD /docker/autobahn_job_docker.py /autobahn_job_docker.py
 RUN pip install mysql-connector-python requests
-CMD ["ls"]
-CMD ["pause"]
+CMD ["ping", ["8.8.8.8"]]
