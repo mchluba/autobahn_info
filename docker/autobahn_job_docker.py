@@ -48,5 +48,5 @@ while True:
         sql_connection.set_sent(element[0])
         print ("Datensatz per Telegram versandt!")
 
-    print ("Alles erledigt - Wir warten nun" + str(env_intervall) + " Sekunden!")
+    print ("Alles erledigt - Wir warten nun " + str(env_intervall) + " Sekunden!")
     time.sleep(sleeptime)
