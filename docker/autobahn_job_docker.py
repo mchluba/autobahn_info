@@ -1,5 +1,6 @@
 from autobahnbot import AutobahnParser, SQLConnector, TelegramBot
 import os
+import time
 
 print ("Imports abgeschlossen")
 
@@ -12,6 +13,7 @@ telegram_chatid = os.environ['TELEGRAM_CHATID']
 env_highway = os.environ['ENV_HIGHWAY']
 env_location1 = os.environ['ENV_LOCATION1']
 env_location2 = os.environ['ENV_LOCATION2']
+env_intervall = os.environ["ENV_INTERVALL"]
 
 print ("Variablen geladen!")
 
@@ -44,3 +46,6 @@ while True:
         telegram_bot.sendMessage(element)
         sql_connection.set_sent(element[0])
         print ("Datensatz per Telegram versandt!")
+
+    print ("Alles erledigt - Wir warten nun" + str(env_intervall) + " Sekunden!")
+    time.sleep(env_intervall)
