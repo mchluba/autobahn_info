@@ -15,7 +15,6 @@ env_location1 = os.environ['ENV_LOCATION1']
 env_location2 = os.environ['ENV_LOCATION2']
 env_intervall = os.environ["ENV_INTERVALL"]
 sleeptime = int(env_intervall)
-print (sleeptime)
 
 print ("Variablen geladen!")
 
@@ -50,4 +49,4 @@ while True:
         print ("Datensatz per Telegram versandt!")
 
     print ("Alles erledigt - Wir warten nun" + str(env_intervall) + " Sekunden!")
-    time.sleep(15)
+    time.sleep(sleeptime)
