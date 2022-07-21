@@ -1,6 +1,8 @@
 from autobahnbot import AutobahnParser, SQLConnector, TelegramBot
 import os
 
+print ("Imports abgeschlossen")
+
 mysql_host = os.environ['MYSQL_HOST']
 mysql_user = os.environ['MYSQL_USER']
 mysql_password = os.environ['MYSQL_PASSWORD']
@@ -11,25 +13,32 @@ env_highway = os.environ['ENV_HIGHWAY']
 env_location1 = os.environ['ENV_LOCATION1']
 env_location2 = os.environ['ENV_LOCATION2']
 
+print ("Variablen geladen!")
 
 sql_connection = SQLConnector(mysql_host, mysql_user, mysql_password, mysql_database)
 telegram_bot = TelegramBot(telegram_token, telegram_chatid)
 
+print ("SQL-Verbindung und Telegram-Bot aufgebaut")
 
-## DATEN ABFRAGEN UND GGF EINTRAGEN
 
-autobahn_data = AutobahnParser().get_warnings(env_highway, env_location1, env_location2)
-database_data = sql_connection.get_all_externalids()
+while True:
+    ## DATEN ABFRAGEN UND GGF EINTRAGEN
 
-for element in autobahn_data:
-    if element["external_id"] in database_data:
-        continue
-    sql_connection.put_entry(element["external_id"], element["highway"], element["location_lat"], element["location_long"], element["timestamp"], element["isblocked"], element["description"], element["routea"], element["routeb"])
+    autobahn_data = AutobahnParser().get_warnings(env_highway, env_location1, env_location2)
+    database_data = sql_connection.get_all_externalids()
 
-## DATEN VERSENDEN
+    print ("Datenbank und Autobahn-API eingelesen")
 
-unsent_data = sql_connection.get_unsent_entries()
 
-for element in unsent_data:
-    telegram_bot.sendMessage(element)
-    sql_connection.set_sent(element[0])
+    for element in autobahn_data:
+        if element["external_id"] in database_data:
+            continue
+        sql_connection.put_entry(element["external_id"], element["highway"], element["location_lat"], element["location_long"], element["timestamp"], element["isblocked"], element["description"], element["routea"], element["routeb"])
+
+    ## DATEN VERSENDEN
+
+    unsent_data = sql_connection.get_unsent_entries()
+
+    for element in unsent_data:
+        telegram_bot.sendMessage(element)
+        sql_connection.set_sent(element[0])
