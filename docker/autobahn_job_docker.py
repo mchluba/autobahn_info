@@ -48,4 +48,4 @@ while True:
         print ("Datensatz per Telegram versandt!")
 
     print ("Alles erledigt - Wir warten nun" + str(env_intervall) + " Sekunden!")
-    time.sleep(int(env_intervall))
+    time.sleep(15)
