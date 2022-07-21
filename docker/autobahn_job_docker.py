@@ -25,15 +25,16 @@ while True:
     ## DATEN ABFRAGEN UND GGF EINTRAGEN
 
     autobahn_data = AutobahnParser().get_warnings(env_highway, env_location1, env_location2)
+    print ("Autobahn-API Daten abgefragt")
     database_data = sql_connection.get_all_externalids()
-
-    print ("Datenbank und Autobahn-API eingelesen")
+    print ("Datenbank Daten abgefragt")
 
 
     for element in autobahn_data:
         if element["external_id"] in database_data:
             continue
         sql_connection.put_entry(element["external_id"], element["highway"], element["location_lat"], element["location_long"], element["timestamp"], element["isblocked"], element["description"], element["routea"], element["routeb"])
+        print ("Neuen Eintrag gefunden und eingetragen!")
 
     ## DATEN VERSENDEN
 
@@ -42,3 +43,4 @@ while True:
     for element in unsent_data:
         telegram_bot.sendMessage(element)
         sql_connection.set_sent(element[0])
+        print ("Datensatz per Telegram versandt!")
